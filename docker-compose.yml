@@ -1,0 +1,14 @@
+version: '1.1'
+
+services:
+  web:
+    build: ./merge_contacts
+    command: gunicorn merge_contacts.wsgi:application --bind 0.0.0.0:8000
+    #    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./merge_contacts/:/usr/src/merge_contacts/
+    ports:
+      - 8000:8000
+#    env_file:
+#      - ./.env.dev
+

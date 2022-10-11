@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Склонировать репозиторий командой (ввести yes при запросе во время установки):
-git clone https://github.com/Oleg-Sl/Qorum---merge_contacts.git
+git clone https://github.com/Oleg-Sl/Quorum_merge_contacts.git
 
 # Перейти в директорию загруженного проекта:
-cd Qorum---merge_contacts/
+cd QQuorum_merge_contacts/
 
 # Создание docker-образа:
 docker build ./merge_contacts/

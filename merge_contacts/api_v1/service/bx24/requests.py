@@ -33,6 +33,7 @@ class Bitrix24:
 
     def __init__(self):
         tokens = get_secrets_all_bx24()
+        logger_req.info(tokens)
         self.domain = tokens.get("domain", None)
         self.auth_token = tokens.get("auth_token", None)
         self.refresh_token = tokens.get("refresh_token", None)

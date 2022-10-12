@@ -9,6 +9,9 @@
 # Создание docker-образа:
 docker build ./merge_contacts/
 
+mkdir ./merge_contacts/reports
+mkdir ./merge_contacts/files
+
 # !!! ЗДЕСЬ - добавить из Битрикс "client_id" и "client_secret"
 echo '{
   "domain": "",

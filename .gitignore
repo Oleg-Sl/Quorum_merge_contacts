@@ -100,7 +100,7 @@ db.sqlite3
 #reports/*
 #*/reports/*
 access.log*
-migrations/*
-*/migrations/*
-*/*/migrations/*
+#migrations/*
+#*/migrations/*
+#*/*/migrations/*
 #files/*

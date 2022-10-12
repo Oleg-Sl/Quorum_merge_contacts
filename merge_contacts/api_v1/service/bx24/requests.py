@@ -32,6 +32,16 @@ class Bitrix24:
     timeout = 60
 
     def __init__(self):
+        self.length_batch = BX24__COUNT_METHODS_IN_BATH
+        self.domain = None
+        self.auth_token = None
+        self.refresh_token = None
+        self.client_id = None
+        self.client_secret = None
+        self.expires_in = None
+        self.init_tokens()
+
+    def init_tokens(self):
         tokens = get_secrets_all_bx24()
         logger_req.info(tokens)
         self.domain = tokens.get("domain", None)
@@ -40,7 +50,6 @@ class Bitrix24:
         self.client_id = tokens.get("client_id")
         self.client_secret = tokens.get("client_secret")
         self.expires_in = None
-        self.length_batch = BX24__COUNT_METHODS_IN_BATH
 
     def refresh_tokens(self):
         r = {}
@@ -76,6 +85,9 @@ class Bitrix24:
             return result
 
     def call(self, method, data):
+        if not self.domain or self.auth_token:
+            self.init_tokens()
+
         try:
             url = self.api_url.format(domain=self.domain, method=method)
             params = dict(auth=self.auth_token)

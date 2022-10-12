@@ -8,11 +8,15 @@
         {% load static %}
         <script>
             window.onload = function() {
-                let domen = "{{domen}}";
+                let domen = "{{domain}}";
                 let urlContactPing = `${domen}/merge_contacts_2/api/v1/status-merge-contacts/`;
                 let urlContactMerge = `${domen}/merge_contacts_2/api/v1/merge-contacts/`;
                 let urlReportFilename = `${domen}/merge_contacts_2/api/v1/report/`;
                 let urlReportDownload = `${domen}/merge_contacts_2/api/v1/report-download/`;
+                console.log('urlContactPing = ', urlContactPing);
+                console.log('urlContactMerge = ', urlContactMerge);
+                console.log('urlReportFilename = ', urlReportFilename);
+                console.log('urlReportDownload = ', urlReportDownload);
 
                 let btnMerge = document.querySelector("#btn-merge");
                 let progressContact = document.querySelector("#progress-contact .progress-bar");

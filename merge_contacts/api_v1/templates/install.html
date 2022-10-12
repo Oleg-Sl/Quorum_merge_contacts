@@ -11,9 +11,11 @@
 		<p>INSTALL.html</p>
 		<!--		<script src="{% static 'scripts/install/script.js' %}"></script>-->
 		<script>
-			let DOMAIN = "https://atonapplication.xyz/merge_contacts/api/v1";
-			let URL__CREATE_DEAL = `${DOMAIN}/create-deal/`;
-			let URL__UPDATE_DEAL = `${DOMAIN}/create-deal/`;
+			let domen = "{{domain}}";
+			let URL__CREATE_DEAL = `${domen}/mergecontacts/api/v1/create-deal/`;
+			let URL__UPDATE_DEAL = `${domen}/mergecontacts/api/v1/create-deal/`;
+			console.log('URL__CREATE_DEAL = ', URL__CREATE_DEAL);
+			console.log('URL__UPDATE_DEAL = ', URL__UPDATE_DEAL);
 
 			async function callMethod(method, params = {}) {
 				return new Promise((resolve, reject) => {

@@ -1,12 +1,13 @@
+import os
+import json
+import logging
+
 from threading import Thread
 from django.shortcuts import render
 from django.http import FileResponse, Http404
 from django.views.decorators.clickjacking import xframe_options_exempt
 from rest_framework import views, status
 from rest_framework.response import Response
-import logging
-import os
-import json
 from django.conf import settings
 
 
@@ -34,8 +35,12 @@ class InstallAppApiView(views.APIView):
             "application_token": request.query_params.get("APP_SID", ""),
             'client_endpoint': f'https://{request.query_params.get("DOMAIN", "")}/rest/',
         }
-        bx24_tokens.create_secrets_bx24(data)
-        return render(request, 'install.html')
+        tokens.create_secrets_bx24(data)
+
+        with open(os.path.join(settings.BASE_DIR, 'settings.json')) as secrets_file:
+            data = json.load(secrets_file)
+
+        return render(request, 'install.html', context={"domain": data.get("DOMEN")})
 
 
 # Обработчик удаления приложения
@@ -52,14 +57,14 @@ class IndexApiView(views.APIView):
         with open(os.path.join(settings.BASE_DIR, 'settings.json')) as secrets_file:
             data = json.load(secrets_file)
 
-        return render(request, 'index.html', context={"domen": data.get("DOMEN")})
+        return render(request, 'index.html', context={"domain": data.get("DOMEN")})
 
     @xframe_options_exempt
     def get(self, request):
         with open(os.path.join(settings.BASE_DIR, 'settings.json')) as secrets_file:
             data = json.load(secrets_file)
 
-        return render(request, 'index.html', context={"domen": data.get("DOMEN")})
+        return render(request, 'index.html', context={"domain": data.get("DOMEN")})
 
 
 class DealCreateUpdateViewSet(views.APIView):
@@ -70,7 +75,7 @@ class DealCreateUpdateViewSet(views.APIView):
         id_deal = request.data.get("data[FIELDS][ID]", None)
         application_token = request.data.get("auth[application_token]", None)
 
-        if bx24_tokens.get_secret_bx24("application_token") != application_token:
+        if tokens.get_secret_bx24("application_token") != application_token:
             return Response("Unverified event source", status=status.HTTP_400_BAD_REQUEST)
 
         if not id_deal:

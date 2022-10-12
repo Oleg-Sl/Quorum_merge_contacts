@@ -97,10 +97,10 @@ db.sqlite3
 .json
 *.json
 
-reports/*
+#reports/*
 #*/reports/*
 access.log*
 migrations/*
 */migrations/*
 */*/migrations/*
-files/*
+#files/*

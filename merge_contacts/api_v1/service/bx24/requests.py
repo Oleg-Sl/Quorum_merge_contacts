@@ -2,6 +2,8 @@ import json
 import os
 import time
 import re
+import logging
+
 from requests import adapters, post, exceptions, get as http_get
 from urllib.parse import unquote
 from mimetypes import guess_extension as extension
@@ -10,6 +12,16 @@ from django.conf import settings
 from .tokens import (update_secrets_bx24, get_secrets_all_bx24, get_secret_bx24)
 from ..params import BX24__COUNT_METHODS_IN_BATH, BX24__COUNT_RECORDS_IN_METHODS, COUNT_THREAD
 # from variables import
+
+
+# логгер входные данные событий от Битрикс
+logger_req = logging.getLogger('bx24_requests')
+logger_req.setLevel(logging.INFO)
+fh_req = logging.handlers.TimedRotatingFileHandler('bx24_requests.log', when='D', interval=1)
+formatter_req = logging.Formatter('[%(asctime)s] %(levelname).1s %(message)s')
+fh_req.setFormatter(formatter_req)
+logger_req.addHandler(fh_req)
+
 
 adapters.DEFAULT_RETRIES = 10
 
@@ -32,10 +44,25 @@ class Bitrix24:
     def refresh_tokens(self):
         r = {}
         try:
+            logger_req.info({
+                "func": "refresh_tokens",
+                "url": self.oauth_url,
+                "params": {'grant_type': 'refresh_token', 'client_id': self.client_id, 'client_secret': self.client_secret,
+                        'refresh_token': self.refresh_token},
+                "state": "pre_req"
+            })
             r = post(
                 self.oauth_url,
                 params={'grant_type': 'refresh_token', 'client_id': self.client_id, 'client_secret': self.client_secret,
                         'refresh_token': self.refresh_token})
+            logger_req.info({
+                "func": "refresh_tokens",
+                "url": self.oauth_url,
+                "params": {'grant_type': 'refresh_token', 'client_id': self.client_id, 'client_secret': self.client_secret,
+                        'refresh_token': self.refresh_token},
+                "state": "post_req",
+                "result": r.text
+            })
             result = json.loads(r.text)
 
             self.auth_token = result['access_token']
@@ -54,7 +81,22 @@ class Bitrix24:
             headers = {
                 'Content-Type': 'application/json',
             }
+            logger_req.info({
+                "func": "call",
+                "url": url,
+                "params": params,
+                "headers": headers,
+                "state": "pre_req"
+            })
             r = post(url, data=json.dumps(data), params=params, headers=headers, timeout=self.timeout)
+            logger_req.info({
+                "func": "call",
+                "url": url,
+                "params": params,
+                "headers": headers,
+                "state": "post_req",
+                "result": r.text
+            })
             result = json.loads(r.text)
         except ValueError:
             result = dict(error=f'Error on decode api response [{r.text}]')

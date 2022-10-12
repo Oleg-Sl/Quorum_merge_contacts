@@ -98,7 +98,7 @@ db.sqlite3
 *.json
 
 reports/*
-*/reports/*
+#*/reports/*
 access.log*
 migrations/*
 */migrations/*

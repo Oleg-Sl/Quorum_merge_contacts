@@ -54,13 +54,13 @@ class Bitrix24:
     def refresh_tokens(self):
         r = {}
         try:
-            logger_req.info({
-                "func": "refresh_tokens",
-                "url": self.oauth_url,
-                "params": {'grant_type': 'refresh_token', 'client_id': self.client_id, 'client_secret': self.client_secret,
-                        'refresh_token': self.refresh_token},
-                "state": "pre_req"
-            })
+            # logger_req.info({
+            #     "func": "refresh_tokens",
+            #     "url": self.oauth_url,
+            #     "params": {'grant_type': 'refresh_token', 'client_id': self.client_id, 'client_secret': self.client_secret,
+            #             'refresh_token': self.refresh_token},
+            #     "state": "pre_req"
+            # })
             r = post(
                 self.oauth_url,
                 params={'grant_type': 'refresh_token', 'client_id': self.client_id, 'client_secret': self.client_secret,
@@ -94,17 +94,18 @@ class Bitrix24:
             headers = {
                 'Content-Type': 'application/json',
             }
-            logger_req.info({
-                "func": "call",
-                "url": url,
-                "params": params,
-                "headers": headers,
-                "state": "pre_req"
-            })
+            # logger_req.info({
+            #     "func": "call",
+            #     "url": url,
+            #     "params": params,
+            #     "headers": headers,
+            #     "state": "pre_req"
+            # })
             r = post(url, data=json.dumps(data), params=params, headers=headers, timeout=self.timeout)
             logger_req.info({
                 "func": "call",
                 "url": url,
+                "data": data,
                 "params": params,
                 "headers": headers,
                 "state": "post_req",

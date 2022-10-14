@@ -149,12 +149,14 @@ class Bitrix24:
 
     # формирование команд для batch запросов
     @staticmethod
-    def forming_long_batch_commands(method, total_contacts, fields=[]):
+    def forming_long_batch_commands(method, total_contacts, fields=[], params={}):
         cmd = {}
         for i in range(0, total_contacts, BX24__COUNT_RECORDS_IN_METHODS):
             cmd[f'key_{i}'] = f'{method}?start={i}'
-            for field in fields:
-                cmd[f'key_{i}'] += f'&select[]={field}'
+            # for field in fields:
+            #     cmd[f'key_{i}'] += f'&select[]={field}'
+            cmd[f'key_{i}'] += '&'.join([f'select[]={field}' for field in fields])
+            cmd[f'key_{i}'] += '&'.join([f'{key}={val}' for key, val in params.items()])
 
         return cmd
 

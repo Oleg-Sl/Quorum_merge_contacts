@@ -24,6 +24,8 @@
                 let progressContactCompany = document.querySelector("#progress-contact-company .progress-bar");
                 let progressDuplicates = document.querySelector("#progress-duplicates .progress-bar");
                 let countDuplicates = document.querySelector("#countDuplicates");
+
+                let responsibleContactInput = document.querySelector("#responsibleContactInput");
                 let methodMerge = document.querySelector("#methodMerge");
                 let reportList = document.querySelector("#reportList tbody");
 
@@ -123,6 +125,7 @@
                                 },
                                 body: JSON.stringify({
                                     "method": getMethodMerge(),
+                                    "assigned_id": responsibleContactInput.value
                                  })
                             }
                         );
@@ -186,6 +189,11 @@
                         <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                     </div>
                 </div>
+            </div>
+            <br>
+            <div class="mb-3 col-3">
+                <label for="responsibleContactInput" class="form-label">ID владельца контакта</label>
+                <input type="number" class="form-control" id="responsibleContactInput" placeholder="...">
             </div>
             <br>
             <div class="row">

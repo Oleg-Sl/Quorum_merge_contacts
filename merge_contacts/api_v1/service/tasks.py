@@ -24,7 +24,7 @@ company_contact_queue = None
 duplicates_queue = None
 
 
-def merge_contacts(method_merge):
+def merge_contacts(method_merge, assigned_id):
     global contacts_queue
     global companies_queue
     global company_contact_queue
@@ -45,7 +45,7 @@ def merge_contacts(method_merge):
     fields_company = [company.name for company in Companies._meta.get_fields()]
 
     # Очереди
-    contacts_queue = QueueCommands('crm.contact.list', bx24, COUNT_THREAD)
+    contacts_queue = QueueCommands('crm.contact.list', bx24, COUNT_THREAD, {"ASSIGNED_BY_ID": assigned_id})
     companies_queue = QueueCommands('crm.company.list', bx24, COUNT_THREAD)
     company_contact_queue = QueueByModels(bx24, COUNT_THREAD)
     duplicates_queue = MyQueue(COUNT_THREAD)

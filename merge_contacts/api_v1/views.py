@@ -99,11 +99,12 @@ class MergeContactsViewSet(views.APIView):
 
         logger.info(request.data)
         method = request.data.get("method")
+        assigned_id = request.data.get("assigned_id")
 
         if thread_merge and thread_merge.is_alive():
             return Response("NO", status=status.HTTP_200_OK)
 
-        thread_merge = Thread(target=tasks.merge_contacts, args=[method, ])
+        thread_merge = Thread(target=tasks.merge_contacts, args=[method, assigned_id, ])
         thread_merge.start()
 
         return Response("Ok", status=status.HTTP_200_OK)

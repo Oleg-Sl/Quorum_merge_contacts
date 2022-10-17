@@ -157,8 +157,9 @@ class Bitrix24:
             # for field in fields:
             #     cmd[f'key_{i}'] += f'&select[]={field}'
             cmd[f'key_{i}'] += '&'.join([f'select[]={field}' for field in fields])
-            cmd[f'key_{i}'] += '&'
-            cmd[f'key_{i}'] += '&'.join([f'FILTER[{key}]={val}' for key, val in filters.items()])
+            if filters:
+                cmd[f'key_{i}'] += '&'
+                cmd[f'key_{i}'] += '&'.join([f'FILTER[{key}]={val}' for key, val in filters.items()])
 
         return cmd
 

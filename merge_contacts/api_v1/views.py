@@ -96,7 +96,7 @@ class MergeContactsViewSet(views.APIView):
 
     def post(self, request):
         global thread_merge
-
+        filters = {}
         logger.info(request.data)
         method = request.data.get("method")
         assigned_id = request.data.get("assigned_id")
@@ -104,7 +104,10 @@ class MergeContactsViewSet(views.APIView):
         if thread_merge and thread_merge.is_alive():
             return Response("NO", status=status.HTTP_200_OK)
 
-        thread_merge = Thread(target=tasks.merge_contacts, args=[method, assigned_id, ])
+        if assigned_id:
+            filters["ASSIGNED_BY_ID"] = assigned_id
+
+        thread_merge = Thread(target=tasks.merge_contacts, args=[method, filters, ])
         thread_merge.start()
 
         return Response("Ok", status=status.HTTP_200_OK)

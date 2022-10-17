@@ -56,9 +56,10 @@ def company_bind_contact(res_from_bx, lock):
         for contact in contacts:
             # сохранение компании
             lock.acquire()
-            company_obj = Companies.objects.get(ID=id_company)
-            contact_obj = Contacts.objects.get(ID=contact['CONTACT_ID'])
-            res = company_obj.contacts.add(contact_obj)
+            company_obj = Companies.objects.filter(ID=id_company).first()
+            contact_obj = Contacts.objects.filter(ID=contact['CONTACT_ID']).first()
+            if company_obj and contact_obj:
+                res = company_obj.contacts.add(contact_obj)
             lock.release()
 
 

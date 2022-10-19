@@ -30,7 +30,7 @@ def merge_contacts(method_merge, filters):
     global company_contact_queue
     global duplicates_queue
     report = Report()
-    point_1 = time.time()
+    # point_1 = time.time()
 
     # создание отчета
     # lock.acquire()
@@ -71,34 +71,34 @@ def merge_contacts(method_merge, filters):
     # Формирование очереди запросов и ожидание завершения получения данных - КОНТАКТЫ
     contacts_queue.forming(fields_contact)
     threads_contacts.join()
-    point_2 = time.time()
+    # point_2 = time.time()
     # print("Контакты получены")
 
     # Заполнение очереди запросов и ожидание завершения получения данных - КОМПАНИИ
     companies_queue.forming(fields_company)
     threads_companies.join()
-    point_3 = time.time()
+    # point_3 = time.time()
     # print("Компании получены")
 
     # Получение данных отношения компания-контакт из Битрикс
     company_contact_queue.forming(Companies)
     threads_company_contact.join()
-    point_4 = time.time()
+    # point_4 = time.time()
     # print("Связи контакт-компания получены")
 
     # формирование списка дублирующихся значений полей
     duplicates = get_duplicate_value(method_merge)
-    point_5 = time.time()
+    # point_5 = time.time()
     pprint(duplicates)
 
     # Заполнение очереди дубликатов контактов
     duplicates_queue.set_start_size(len(duplicates))
     [duplicates_queue.send_queue(id_contact) for id_contact in duplicates]
     duplicates_queue.send_queue_stop()
-    point_6 = time.time()
+    # point_6 = time.time()
 
     threads_duplicates.join()
-    point_7 = time.time()
+    # point_7 = time.time()
 
     # закрытие отчета
     report.closed()
@@ -119,3 +119,8 @@ def clear_database():
     Contacts.objects.all().delete()
     Companies.objects.all().delete()
 
+
+# def registration_user():
+#     Email.objects.all().delete()
+#     Contacts.objects.all().delete()
+#     Companies.objects.all().delete()

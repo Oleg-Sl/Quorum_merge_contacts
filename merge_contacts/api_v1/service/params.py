@@ -14,7 +14,7 @@ DUPLICATES_FIELDS = {
 # способы объединения полей контактов
 TYPE_MERGE_FIELD = {
     'max_length': ['NAME', ],
-    'concat_asc_date': ['SOURCE_DESCRIPTION', 'UF_CRM_1631872191', 'UF_CRM_1637317264',],
+    'concat_asc_date': ['SOURCE_DESCRIPTION', 'UF_CRM_1631872191', 'UF_CRM_1637317264', ],
     'concat_desc_date': ['UF_CRM_1631872766', ],
 }
 

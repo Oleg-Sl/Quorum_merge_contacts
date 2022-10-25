@@ -39,7 +39,7 @@ class QueueCommands(MyQueue):
         super().__init__(count_treads)
 
     def forming(self, fields=[]):
-        total = self.bx24.get_count_records(self.method)
+        total = self.bx24.get_count_records(self.method, self.filters)
         commands = self.bx24.forming_long_batch_commands(self.method, total, fields, self.filters)
         cmd_list = self.bx24.split_long_batch_commands(commands)
         self.set_start_size(len(cmd_list))

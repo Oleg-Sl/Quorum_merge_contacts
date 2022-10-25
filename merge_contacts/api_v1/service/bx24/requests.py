@@ -143,8 +143,12 @@ class Bitrix24:
         )
 
     # возвращает количество объектов для заданного списочного метода
-    def get_count_records(self, method):
-        response = self.call(method, {})
+    def get_count_records(self, method, filters={}):
+        data = {}
+        if filters:
+            data["filter"] = filters
+
+        response = self.call(method, data)
         if response and 'total' in response:
             return response['total']
 

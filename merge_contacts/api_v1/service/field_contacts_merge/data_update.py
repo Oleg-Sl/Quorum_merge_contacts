@@ -5,7 +5,7 @@ from datetime import datetime
 from api_v1.models import Email, Contacts, Companies
 
 
-# Класс-примесь - обработки поля компании по правилу: первое не пустое значение от нового к старому
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 class FieldsContactsCompanyNonEmptyAscDate:
     def get_field_company_non_empty(self):
         companies = Companies.objects.filter(contacts=self.ids_sort_date[-1]).values_list("ID", flat=True)
@@ -17,7 +17,7 @@ class FieldsContactsCompanyNonEmptyAscDate:
                 return list(companies)
 
 
-# Класс-примесь - обработки поля по правилу: первое не пустое значение от нового к старому
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 class FieldsContactsFirstNonEmptyAscDate:
     def get_field_non_empty(self, field):
         if self.contacts[self.ids_sort_date[0]].get(field):
@@ -29,7 +29,7 @@ class FieldsContactsFirstNonEmptyAscDate:
                 return value
 
 
-# Класс-примесь - обработки поля по правилу: объединение через ";" от нового к старому
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ";" пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 class FieldsContactsRuleConcatDescDate:
     def get_field_rule_concat_desc_date(self, field):
         values = []
@@ -49,7 +49,7 @@ class FieldsContactsRuleConcatDescDate:
         return '; '.join(values)
 
 
-# Класс-примесь - обработки поля по правилу: объединение через ";" от старого к новому
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ";" пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
 class FieldsContactsRuleConcatAscDate:
     def get_field_rule_concat_asc_date(self, field):
         values = []
@@ -57,6 +57,8 @@ class FieldsContactsRuleConcatAscDate:
         for id_contact in self.ids_sort_date:
             field_value = self.contacts[id_contact].get(field, '')
             # values.extend([el.strip() for el in field_value.split(';') if el])
+            if not field_value:
+                continue
             for el in field_value.split(';'):
                 elem = el.strip()
                 if elem and elem not in values:
@@ -65,7 +67,7 @@ class FieldsContactsRuleConcatAscDate:
         return '; '.join(values)
 
 
-# Класс-примесь - обработки поля по правилу: наиболее длинное значение
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 class FieldsContactsRuleMaxLength:
     def get_field_rule_max_length(self, field):
         value = ''
@@ -78,7 +80,7 @@ class FieldsContactsRuleMaxLength:
         return value
 
 
-# Класс-примесь - обработки поля с типом CRM_MULTIFIELD (объединение уникальных значений)
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ CRM_MULTIFIELD (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 class FieldsContactsTypeCrmMultifield:
     def get_field_type_crm_multifield(self, field):
         multifield = []
@@ -98,22 +100,22 @@ class FieldsContactsTypeCrmMultifield:
         return multifield
 
 
-# Класс-примесь - обработки поля с типом FILE (получение последнего добавленного)
+# пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ FILE (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)
 class FieldsContactsTypeFile:
     def get_field_type_file(self, field):
         field_value = self.contacts[self.id_last_created].get(field)
 
-        # если у нового контакта поле не пустое
+        # пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         if field_value:
             return
 
-        # перебор от самого свежего контакта к самому старому
+        # пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         for id_cont in self.ids_sort_date[::-1]:
             field_value = self.contacts[id_cont].get(field)
-            # пропуск пустых полей
+            # пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
             if not field_value:
                 continue
-            # если поле содержит список файлов
+            # пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             if isinstance(field_value, list):
                 return self.get_files(field_value)
             else:

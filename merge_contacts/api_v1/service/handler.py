@@ -5,7 +5,7 @@ from .report.report_to_html import Report
 from .params import TYPE_MERGE_FIELD
 from.field_contacts_merge.data_update import FieldsContactsUpdate
 
-from api_v1.models import Email, Contacts, Companies
+from api_v1.models import Email, Contacts, Companies, Deals
 
 
 bx24 = Bitrix24()
@@ -50,6 +50,16 @@ def companies_create(res_from_bx, lock):
             lock.release()
 
 
+# добавление сделок в БД
+def deals_create(res_from_bx, lock):
+    for _, deals in res_from_bx.items():
+        for deal in deals:
+            # сохранение сделок
+            lock.acquire()
+            deal_item, created = Deals.objects.update_or_create(**deal)
+            lock.release()
+
+
 # связывание записей таблиц контактов и компаний в БД
 def company_bind_contact(res_from_bx, lock):
     for id_company, contacts in res_from_bx.items():
@@ -60,6 +70,18 @@ def company_bind_contact(res_from_bx, lock):
             contact_obj = Contacts.objects.filter(ID=contact['CONTACT_ID']).first()
             if company_obj and contact_obj:
                 res = company_obj.contacts.add(contact_obj)
+            lock.release()
+
+
+# связывание записей таблиц контактов и сделок в БД
+def deal_bind_contact(res_from_bx, lock):
+    for id_deal, contacts in res_from_bx.items():
+        for contact in contacts:
+            lock.acquire()
+            deal_obj = Deals.objects.filter(ID=id_deal).first()
+            contact_obj = Contacts.objects.filter(ID=contact['CONTACT_ID']).first()
+            if deal_obj and contact_obj:
+                res = deal_obj.contacts.add(contact_obj)
             lock.release()
 
 

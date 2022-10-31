@@ -34,7 +34,6 @@ class QueueCommands(MyQueue):
     def __init__(self, method, bx24, count_treads, filters={}):
         self.method = method
         self.bx24 = bx24
-        # self.args = args if args else []
         self.filters = filters if filters else {}
         super().__init__(count_treads)
 
@@ -48,7 +47,8 @@ class QueueCommands(MyQueue):
 
 
 class QueueByModels(MyQueue):
-    def __init__(self, bx24, count_treads):
+    def __init__(self, method, bx24, count_treads):
+        self.method = method
         self.bx24 = bx24
         super().__init__(count_treads)
 
@@ -56,7 +56,8 @@ class QueueByModels(MyQueue):
         ids = model_name.objects.values_list('ID', flat=True)
         commands = {}
         for i in ids:
-            commands[i] = f'crm.company.contact.items.get?id={i}'
+            commands[i] = f'{self.method}?id={i}'
+            # commands[i] = f'crm.company.contact.items.get?id={i}'
         cmd_list = self.bx24.split_long_batch_commands(commands)
         self.set_start_size(len(cmd_list))
         [self.send_queue(cmd) for cmd in cmd_list]

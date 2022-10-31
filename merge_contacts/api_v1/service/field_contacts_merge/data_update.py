@@ -1,4 +1,5 @@
 import os
+import re
 import base64
 from datetime import datetime
 
@@ -41,12 +42,12 @@ class FieldsContactsRuleConcatDescDate:
                 continue
             # values.extend([el.strip() for el in field_value.split(';')])
 
-            for el in field_value.split(';'):
+            for el in re.split(',|;', field_value):
                 elem = el.strip()
                 if elem and elem not in values:
                     values.append(elem)
 
-        return '; '.join(values)
+        return ', '.join(values)
 
 
 # �����-������� - ��������� ���� �� �������: ����������� ����� ";" �� ������� � ������
@@ -59,12 +60,12 @@ class FieldsContactsRuleConcatAscDate:
             # values.extend([el.strip() for el in field_value.split(';') if el])
             if not field_value:
                 continue
-            for el in field_value.split(';'):
+            for el in re.split(',|;', field_value):
                 elem = el.strip()
                 if elem and elem not in values:
                     values.append(elem)
 
-        return '; '.join(values)
+        return ', '.join(values)
 
 
 # �����-������� - ��������� ���� �� �������: �������� ������� ��������

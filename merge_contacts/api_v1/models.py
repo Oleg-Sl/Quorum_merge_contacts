@@ -42,7 +42,16 @@ class Companies(models.Model):
         verbose_name_plural = 'Компания'
 
 
+class Deals(models.Model):
+    ID = models.PositiveIntegerField(primary_key=True, verbose_name='Идентификатор сделки', unique=True, db_index=True)
+    contacts = models.ManyToManyField(Contacts, db_index=True)
 
+    def __str__(self):
+        return str(self.ID)
+
+    class Meta:
+        verbose_name = 'Сделка'
+        verbose_name_plural = 'Сделки'
 
 
 

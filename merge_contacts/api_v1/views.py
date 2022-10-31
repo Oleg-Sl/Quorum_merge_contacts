@@ -133,9 +133,17 @@ class StatusMergeContactsViewSet(views.APIView):
                     "start": tasks.companies_queue.get_start_size(),
                     "actual": tasks.companies_queue.qsize()
                 }
+                res["deals"] = {
+                    "start": tasks.deals_queue.get_start_size(),
+                    "actual": tasks.deals_queue.qsize()
+                }
                 res["contact_company"] = {
                     "start": tasks.company_contact_queue.get_start_size(),
                     "actual": tasks.company_contact_queue.qsize()
+                }
+                res["contact_deal"] = {
+                    "start": tasks.deal_contact_queue.get_start_size(),
+                    "actual": tasks.deal_contact_queue.qsize()
                 }
                 res["duplicates"] = {
                     "start": tasks.duplicates_queue.get_start_size(),

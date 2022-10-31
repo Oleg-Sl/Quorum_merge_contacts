@@ -74,6 +74,26 @@ class ArrayThreadsBatchGetCompanies(ArrayThreads):
             self.input_queue.task_done()
 
 
+class ArrayThreadsBatchGetDeals(ArrayThreads):
+    def __init__(self, input_queue, bx24, count_threads):
+        super().__init__(input_queue, bx24, count_threads)
+
+    def handler(self):
+        while True:
+            item = self.input_queue.pop()
+            if item is None:
+                break
+
+            response = self.bx24.batch(item)
+            if 'result' not in response or 'result' not in response['result']:
+                continue
+
+            # сохранение полученных компаний в БД
+            handler.deals_create(response['result']['result'], lock)
+
+            self.input_queue.task_done()
+
+
 class ArrayThreadsBatchGetCompanyBindContact(ArrayThreads):
     def __init__(self, input_queue, bx24, count_threads):
         super().__init__(input_queue, bx24, count_threads)
@@ -91,6 +111,27 @@ class ArrayThreadsBatchGetCompanyBindContact(ArrayThreads):
 
             # сохранение связи компания-контакт в БД
             handler.company_bind_contact(response['result']['result'], lock)
+
+            self.input_queue.task_done()
+
+
+class ArrayThreadsBatchGetDealBindContact(ArrayThreads):
+    def __init__(self, input_queue, bx24, count_threads):
+        super().__init__(input_queue, bx24, count_threads)
+
+    def handler(self):
+        while True:
+            item = self.input_queue.pop()
+            if item is None:
+                break
+
+            response = self.bx24.batch(item)
+
+            if 'result' not in response or 'result' not in response['result']:
+                continue
+
+            # сохранение связи компания-контакт в БД
+            handler.deal_bind_contact(response['result']['result'], lock)
 
             self.input_queue.task_done()
 

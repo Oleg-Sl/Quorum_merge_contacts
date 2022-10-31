@@ -21,7 +21,9 @@
                 let btnMerge = document.querySelector("#btn-merge");
                 let progressContact = document.querySelector("#progress-contact .progress-bar");
                 let progressCompanies = document.querySelector("#progress-companies .progress-bar");
+                let progressDeals = document.querySelector("#progress-deals .progress-bar");
                 let progressContactCompany = document.querySelector("#progress-contact-company .progress-bar");
+                let progressContactDeal = document.querySelector("#progress-contact-deal .progress-bar");
                 let progressDuplicates = document.querySelector("#progress-duplicates .progress-bar");
                 let countDuplicates = document.querySelector("#countDuplicates");
 
@@ -55,10 +57,20 @@
                             progressCompanies.style.width = `${percentCompanies}%`;
                             console.log("percentCompanies = ", percentCompanies);
                         }
+                        if (res.deals) {
+                            let percentDeals = getPercent(res.deals.start, res.deals.actual);
+                            progressDeals.style.width = `${percentDeals}%`;
+                            console.log("percentDeals = ", percentDeals);
+                        }
                         if (res.contact_company) {
                             let percentContactCompany = getPercent(res.contact_company.start, res.contact_company.actual);
                             progressContactCompany.style.width = `${percentContactCompany}%`;
                             console.log("percentContactCompany = ", percentContactCompany);
+                        }
+                        if (res.contact_deal) {
+                            let percentContactDeal = getPercent(res.contact_deal.start, res.contact_deal.actual);
+                            progressContactDeal.style.width = `${percentContactDeal}%`;
+                            console.log("percentContactDeal = ", percentContactDeal);
                         }
                         if (res.duplicates) {
                             countDuplicates.innerHTML = res.duplicates.start;
@@ -82,7 +94,9 @@
                 function setZeroProgressbar() {
                     progressContact.style.width = `0%`;
                     progressCompanies.style.width = `0%`;
+                    progressDeals.style.width = `0%`;
                     progressContactCompany.style.width = `0%`;
+                    progressContactDeal.style.width = `0%`;
                     progressDuplicates.style.width = `0%`;
                 }
 
@@ -177,9 +191,21 @@
                         <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                     </div>
                 </div>
+                <div class="block-progress-deals">
+                    <label for="progress-deals" class="form-label">Получение ID сделок:</label>
+                    <div class="progress" id="progress-deals">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                    </div>
+                </div>
                 <div class="block-progress-contact-company">
                     <label for="progress-contact-company" class="form-label">Получение связи контакт-компания:</label>
                     <div class="progress" id="progress-contact-company">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="block-progress-contact-deal">
+                    <label for="progress-contact-deal" class="form-label">Получение связи контакт-сделка:</label>
+                    <div class="progress" id="progress-contact-deal">
                         <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                     </div>
                 </div>

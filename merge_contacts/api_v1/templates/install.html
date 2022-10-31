@@ -50,28 +50,47 @@
 			}
 
 			async function removeHandler() {
-				await callMethod(
-					'event.unbind',
-					{
-						"event": "ONCRMDEALADD",
-						"handler": URL__CREATE_DEAL,
-					},
-					console.log('Обработчик ONCRMDEALADD удален')
+				let events_old = await callMethod(
+					'event.get',
+					{},
+					console.log('Зарегистрированные обработчики')
 				)
-				await callMethod(
-					'event.unbind',
-					{
-						"event": "ONCRMDEALUPDATE",
-						"handler": URL__UPDATE_DEAL,
-					},
-					console.log('Обработчик ONCRMDEALUPDATE удален')
-				)
+				if (events_old.result) {
+					for (let event of events_old.result) {
+						console.log(event);
+						await callMethod(
+							'event.unbind',
+							{
+								"event": event.event,
+								"handler": event.handler,
+							},
+							console.log(`Обработчик ${event.event} удален`)
+						)
+					}				
+				}
+				// await callMethod(
+				// 	'event.unbind',
+				// 	{
+				// 		"event": "ONCRMDEALADD",
+				// 		"handler": URL__CREATE_DEAL,
+				// 	},
+				// 	console.log('Обработчик ONCRMDEALADD удален')
+				// )
+				// await callMethod(
+				// 	'event.unbind',
+				// 	{
+				// 		"event": "ONCRMDEALUPDATE",
+				// 		"handler": URL__UPDATE_DEAL,
+				// 	},
+				// 	console.log('Обработчик ONCRMDEALUPDATE удален')
+				// )
 			}
 
 			BX24.init(async function(){
 				await removeHandler();
 				await addHandler();
-				BX24.installFinish();
+				setTimeout(BX24.installFinish, 10000);
+				//BX24.installFinish();
 			});
 		</script>
 	</body>

@@ -21,7 +21,8 @@ echo '{
 
 # !!! ЗДЕСЬ написать URL вашего сервера
 echo '{
-  "DOMEN": "https://atonapplication.xyz"
+  "DOMEN": "https://atonapplication.xyz",
+  "URL_PATH": "mergecontacts"
 }' > ./merge_contacts/settings.json
 
 echo '{

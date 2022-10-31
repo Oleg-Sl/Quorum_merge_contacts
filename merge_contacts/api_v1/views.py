@@ -60,7 +60,10 @@ class IndexApiView(views.APIView):
         with open(os.path.join(settings.BASE_DIR, 'settings.json')) as secrets_file:
             data = json.load(secrets_file)
 
-        return render(request, 'index.html', context={"domain": data.get("DOMEN")})
+        return render(request, 'index.html', context={
+            "domain": data.get("DOMEN"),
+            "url_path": settings.URL_PATH,
+        })
 
     @xframe_options_exempt
     def get(self, request):

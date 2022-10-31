@@ -109,6 +109,8 @@ def merge_contacts(ids, lock, report):
     id_contact_last = contacts_update.get_id_max_date()
     # ID компании для добавления в последний созданный контакт
     companies = contacts_update.get_field_company_non_empty()
+    # ID сделок для добавления в последний созданный контакт
+    deals = contacts_update.get_field_deal_non_empty()
 
     data = {}
     for field, field_data in fields.items():
@@ -137,10 +139,12 @@ def merge_contacts(ids, lock, report):
     res_update_contact = update_data_contacts(id_contact_last, data)
     # добавление компаний к контакту
     res_add_companies = add_companies_to_contact(id_contact_last, companies)
+    # добавление сделок к контакту
+    res_add_deals = add_deals_to_contact(id_contact_last, deals)
 
     # print('res_update_contact = ', res_update_contact)
     # print('res_add_companies =  ', res_add_companies)
-    if res_update_contact and res_add_companies:
+    if res_update_contact and res_add_companies and res_add_deals:
         # добавление данных в отчет
         lock.acquire()
         report.add_fields(fields)
@@ -180,6 +184,20 @@ def add_companies_to_contact(id_contact, companies):
         return
 
     return response['result']
+
+
+# добавляет контакта к сделке
+def add_deals_to_contact(id_contact, deals):
+    if not deals:
+        return True
+
+    batch = {}
+    for deal_id in deals:
+        batch[deal_id] = f'crm.deal.contact.add?id={deal_id}&fields[CONTACT_ID]={id_contact}'
+
+    response = bx24.batch(batch)
+    if response and 'result' in response and 'result' in response['result']:
+        return response['result']['result']
 
 
 # обновляет данные контакта

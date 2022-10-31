@@ -3,7 +3,18 @@ import re
 import base64
 from datetime import datetime
 
-from api_v1.models import Email, Contacts, Companies
+from api_v1.models import Email, Contacts, Companies, Deals
+
+
+class FieldsContactsDealNonEmptyAscDate:
+    def get_field_deal_non_empty(self):
+        deals_new = []
+        for id_contact in self.ids_sort_date[::-1]:
+            deals = Deals.objects.filter(contacts=id_contact).values_list("ID", flat=True)
+            if deals:
+                deals_new.extend(list(deals))
+
+        return deals_new
 
 
 # �����-������� - ��������� ���� �������� �� �������: ������ �� ������ �������� �� ������ � �������
@@ -157,7 +168,8 @@ class FieldsContactsUpdate(FieldsContactsRuleConcatDescDate,
                            FieldsContactsTypeCrmMultifield,
                            FieldsContactsTypeFile,
                            FieldsContactsFirstNonEmptyAscDate,
-                           FieldsContactsCompanyNonEmptyAscDate):
+                           FieldsContactsCompanyNonEmptyAscDate,
+                           FieldsContactsDealNonEmptyAscDate):
     def __init__(self, bx24, contacts):
         self.bx24 = bx24
         self.contacts = contacts

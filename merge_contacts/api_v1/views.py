@@ -40,7 +40,10 @@ class InstallAppApiView(views.APIView):
         with open(os.path.join(settings.BASE_DIR, 'settings.json')) as secrets_file:
             data = json.load(secrets_file)
 
-        return render(request, 'install.html', context={"domain": data.get("DOMEN")})
+        return render(request, 'install.html', context={
+            "domain": data.get("DOMEN"),
+            "url_path": settings.URL_PATH,
+        })
 
 
 # Обработчик удаления приложения
@@ -64,7 +67,10 @@ class IndexApiView(views.APIView):
         with open(os.path.join(settings.BASE_DIR, 'settings.json')) as secrets_file:
             data = json.load(secrets_file)
 
-        return render(request, 'index.html', context={"domain": data.get("DOMEN")})
+        return render(request, 'index.html', context={
+            "domain": data.get("DOMEN"),
+            "url_path": settings.URL_PATH,
+        })
 
 
 class DealCreateUpdateViewSet(views.APIView):

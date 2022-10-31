@@ -9,10 +9,11 @@
         <script>
             window.onload = function() {
                 let domen = "{{domain}}";
-                let urlContactPing = `${domen}/mergecontacts/api/v1/status-merge-contacts/`;
-                let urlContactMerge = `${domen}/mergecontacts/api/v1/merge-contacts/`;
-                let urlReportFilename = `${domen}/mergecontacts/api/v1/report/`;
-                let urlReportDownload = `${domen}/mergecontacts/api/v1/report-download/`;
+                let url_path = "{{url_path}}";
+                let urlContactPing = `${domen}/${url_path}/api/v1/status-merge-contacts/`;
+                let urlContactMerge = `${domen}/${url_path}/api/v1/merge-contacts/`;
+                let urlReportFilename = `${domen}/${url_path}/api/v1/report/`;
+                let urlReportDownload = `${domen}/${url_path}/api/v1/report-download/`;
                 console.log('urlContactPing = ', urlContactPing);
                 console.log('urlContactMerge = ', urlContactMerge);
                 console.log('urlReportFilename = ', urlReportFilename);

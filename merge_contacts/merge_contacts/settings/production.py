@@ -7,8 +7,14 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
+secrets = {}
 with open(os.path.join(BASE_DIR, 'django_secrets.json')) as secrets_file:
     secrets = json.load(secrets_file)
+
+
+settings_data = {}
+with open(os.path.join(BASE_DIR, 'settings.json')) as settings_file:
+    settings_data = json.load(settings_file)
 
 
 def get_secret(setting, secrets=secrets):
@@ -18,6 +24,8 @@ def get_secret(setting, secrets=secrets):
     except KeyError:
         raise ImproperlyConfigured("Set the {} setting".format(setting))
 
+
+URL_PATH = settings_data.get("URL_PATH", "mergecontacts")
 
 SECRET_KEY = get_secret('SECRET_KEY')
 
@@ -32,9 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
-
     'api_v1'
 ]
 
@@ -91,8 +97,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -101,17 +105,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-# STATIC_URL = 'static/'
 STATIC_URL = 'merge_contact/static/'
 STATIC_ROOT = '/root/projects/quorum/merge_contact/merge_contact/static/'
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

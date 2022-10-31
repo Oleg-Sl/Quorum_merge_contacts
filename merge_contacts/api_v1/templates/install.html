@@ -56,8 +56,8 @@
 					{},
 					console.log('Зарегистрированные обработчики')
 				)
-				if (events_old.result) {
-					for (let event of events_old.result) {
+				if (events_old) {
+					for (let event of events_old) {
 						console.log(event);
 						await callMethod(
 							'event.unbind',

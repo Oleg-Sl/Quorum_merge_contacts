@@ -35,6 +35,8 @@ class Report:
                                 font-size: 14px;
                                 font-family: sans-serif;
                                 color: rgb(33, 37, 41);
+                                max-width: 300px;
+                                overflow: auto;
                             }
                             td {
                                 border: 2px solid #dee2e6;
@@ -44,6 +46,8 @@ class Report:
                                 white-space: nowrap;
                                 color: rgb(33, 37, 41);
                                 padding: 0 5px;
+                                max-width: 300px;
+                                overflow: auto;
                             }
                             .result td {
                                 background-color: #cfe2ff;
@@ -71,6 +75,9 @@ class Report:
                 if field == 'ID':
                     continue
                 header_html += f'<th>{field}</th>\n'
+
+            header_html += f'<th>DEALS</th>\n'
+
             f.write(f'''
                 <thead>
                     <tr>
@@ -79,29 +86,31 @@ class Report:
                 </thead>
             ''')
 
-    def add(self, old_contacts, id_contact_res, data_update, companies):
+    def add(self, old_contacts, id_contact_res, data_update, companies, deals={}):
         with open(self.filename, 'a', encoding=self.encoding) as f:
             html = ''
             for _, contact in old_contacts.items():
                 html += f'''
                     <tr>
-                        {self.get_row_html(contact)}
+                        {self.get_row_html(contact, deals)}
                     </tr>
                 '''
 
             res_contact = old_contacts.get(id_contact_res, {})
             html += f"""
                 <tr class="result">
-                    {self.get_row_res_html(res_contact, data_update, companies)}
+                    {self.get_row_res_html(res_contact, data_update, companies, deals)}
                 </tr>
             """
+
             f.write(f'''
                 <tbody>
                     {html}
                 </tbody>
             ''')
 
-    def get_row_html(self, contact):
+    def get_row_html(self, contact, deals):
+        id_contact = contact.get("ID", "")
         html_row = f'<td>{contact.get("ID", "")}</td>\n'
         for field, field_data in self.fields.items():
             if field == 'ID':
@@ -114,9 +123,12 @@ class Report:
                 html_row += f'<td>{cell}</td>\n'
             else:
                 html_row += f'<td>{contact.get(field, "") or "&ndash;"}</td>\n'
+
+        deals_lst = deals.get(str(id_contact), [])
+        html_row += f'<td>{", ".join([str(i) for i in deals_lst])}</td>\n'
         return html_row
 
-    def get_row_res_html(self, contact, data_update, companies):
+    def get_row_res_html(self, contact, data_update, companies, deals):
         html_row = f'<td>{contact.get("ID", "")}</td>\n'
         for field, field_data in self.fields.items():
             if field == 'ID':
@@ -139,6 +151,9 @@ class Report:
                 html_row += f'<td>{cell}</td>\n'
             else:
                 html_row += f'<td>{contact.get(field, "") or "&ndash;"}</td>\n'
+
+        deals_lst = deals.get("summary", [])
+        html_row += f'<td>{", ".join([str(i) for i in deals_lst])}</td>\n'
         return html_row
 
     def closed(self):

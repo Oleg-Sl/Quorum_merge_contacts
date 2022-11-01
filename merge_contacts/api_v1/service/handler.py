@@ -142,16 +142,27 @@ def merge_contacts(ids, lock, report):
     # добавление сделок к контакту
     res_add_deals = add_deals_to_contact(id_contact_last, deals)
 
-    # print('res_update_contact = ', res_update_contact)
-    # print('res_add_companies =  ', res_add_companies)
     if res_update_contact and res_add_companies and res_add_deals:
+        deals_obj = get_dealid_by_contacts(id_contact_last, ids, deals)
         # добавление данных в отчет
         lock.acquire()
         report.add_fields(fields)
-        report.add(contacts, id_contact_last, data, companies)
+        report.add(contacts, id_contact_last, data, companies, deals_obj)
         lock.release()
 
         del_companies_to_contact(ids, id_contact_last)
+
+
+def get_dealid_by_contacts(id_contact_last, ids_contacts, deals):
+    deals_obj = {}
+    deals_contact_last = Deals.objects.filter(contacts=id_contact_last).values_list("ID", flat=True)
+    deals_obj["summary"] = deals + list(deals_contact_last)
+
+    for id_contact in ids_contacts:
+        deals_contact = Deals.objects.filter(contacts=id_contact).values_list("ID", flat=True)
+        deals_obj[str(id_contact)] = list(deals_contact)
+
+    return deals_obj
 
 
 # удаление контактов

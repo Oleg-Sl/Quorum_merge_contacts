@@ -32,7 +32,7 @@ class FieldsContactsCompanyNonEmptyAscDate:
 # �����-������� - ��������� ���� �� �������: ������ �� ������ �������� �� ������ � �������
 class FieldsContactsFirstNonEmptyAscDate:
     def get_field_non_empty(self, field):
-        if self.contacts[self.ids_sort_date[0]].get(field):
+        if self.contacts[self.ids_sort_date[-1]].get(field):
             return
 
         for id_contact in self.ids_sort_date[::-1]:

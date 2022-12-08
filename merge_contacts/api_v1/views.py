@@ -23,7 +23,6 @@ fh_tasks_access.setFormatter(formatter_tasks_access)
 logger.addHandler(fh_tasks_access)
 
 
-# Обработчик установки приложения
 class InstallAppApiView(views.APIView):
     @xframe_options_exempt
     def post(self, request):
@@ -46,14 +45,12 @@ class InstallAppApiView(views.APIView):
         })
 
 
-# Обработчик удаления приложения
 class UninstallAppApiView(views.APIView):
     @xframe_options_exempt
     def post(self, request):
         return Response(status.HTTP_200_OK)
 
 
-# Обработчик установленного приложения
 class IndexApiView(views.APIView):
     @xframe_options_exempt
     def post(self, request):

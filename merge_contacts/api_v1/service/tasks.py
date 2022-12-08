@@ -123,6 +123,9 @@ def merge_contacts(method_merge, filters):
 
     time.sleep(2)
 
+    # Очистка таблиц БД
+    clear_database()
+
     print("END!!!")
 
 

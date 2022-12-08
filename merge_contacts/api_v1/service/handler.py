@@ -310,3 +310,56 @@ def add_company_in_deal(id_deal):
 
     return 200, 'Ok'
 
+
+# def copy_timeline_and_activity():
+#     pass
+# "crm.timeline.comment.list",
+    # {
+    #     filter: {
+    #         "ENTITY_ID": 10,
+    #         "ENTITY_TYPE": "deal",
+    #     },
+    #     select: ["ID", "COMMENT ", "FILES"]
+    # },
+    #
+    # "crm.timeline.comment.add",
+    # {
+    #     fields:
+    #         {
+    #             "ENTITY_ID": 10,
+    #             "ENTITY_TYPE": "deal",
+    #             "COMMENT": "New comment was added"
+    #         }
+    # },
+    # "crm.activity.list",
+    # {
+    #     order: {"ID": "DESC"},
+    #     filter:
+    #         {
+    #             "OWNER_TYPE_ID": 3,
+    #             "OWNER_ID": 102
+    #         },
+    #     select: ["*", "COMMUNICATIONS"]
+    # },
+    # "crm.activity.list",
+    # {
+    #     order: {"ID": "DESC"},
+    #     filter:
+    #         {
+    #             "OWNER_TYPE_ID": 3,
+    #             "OWNER_ID": 102
+    #         },
+    #     select: ["*", "COMMUNICATIONS"]
+    # },
+    # OWNER_TYPE_ID - это
+    # {"ID": 1, "NAME": "Лид"},
+    # {"ID": 2, "NAME": "Сделка"},
+    # {"ID": 3, "NAME": "Контакт"},
+    # {"ID": 4, "NAME": "Компания"},
+    # {"ID": 7, "NAME": "Предложение"},
+    # {"ID": 5, "NAME": "Счёт"},
+    # {"ID": 8, "NAME": "Реквизиты"}
+    # OWNER_ID - это соответсnвенно ID сущности.
+    # crm.activity.binding.add({activityId: number, entityTypeId: number, entityId: number)
+
+
